@@ -29,6 +29,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/login/', schema_view),
     path('user/', include('lvtn_apps.user.urls')),
+    path('staff/', include('lvtn_apps.staff.urls')),
     path('apartment/', include('lvtn_apps.apartment.urls')),
     path('message/',include('lvtn_apps.message.urls')),
     # path('leaveform/', include('leaveform_apps.leave_form.urls')),

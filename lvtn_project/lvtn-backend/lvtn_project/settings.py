@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'lvtn_apps.apartment.apps.ApartmentConfig',
     'lvtn_apps.common_models.apps.CommonModelsConfig',
     'lvtn_apps.message.apps.MessageConfig',
+    'lvtn_apps.staff.apps.StaffConfig',
 ]
 
 MIDDLEWARE = [
@@ -101,6 +102,9 @@ TEMPLATES = [
 
 REST_FRAMEWORK = { 
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_PERMISSION_CLASSES': (
+            'rest_framework.permissions.IsAdminUser'
+       ),
     }
 WSGI_APPLICATION = 'lvtn_project.wsgi.application'
 

@@ -5,13 +5,16 @@ from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
 from django.db import models
 from django.contrib.auth.models import PermissionsMixin
 import datetime
-from django.core.validators import (
-    FileExtensionValidator,
-    )
 # from leaveform_apps.user.models import User
-from lvtn_apps.utils.method_utils import generate_name_image
+sua_chua = '0'
+don_dep = '1'
 
-class UserManager(AbstractBaseUser):
+ROLE = [
+    (sua_chua, 'sửa chữa'),
+    (don_dep, 'dọn dẹp'),
+]
+
+class StaffManager(AbstractBaseUser):
     def _create_user(self,email,password,**extra_fields):
         if not email:
             raise ValueError('')
@@ -29,23 +32,16 @@ class UserManager(AbstractBaseUser):
             is_supperuser=True
         )
 
-class User(AbstractBaseUser):
+class Staff(AbstractBaseUser):
     
     email = models.EmailField(unique=True)
     department = models.CharField(max_length=100)
-    avatar = models.FileField(
-        upload_to=generate_name_image,
-        # upload_to='product/',
-
-        null=True,
-        blank=True,
-        validators=[
-            FileExtensionValidator(
-                allowed_extensions=['png', 'jpeg', 'jpg', 'svg']
-                )
-            ]
-        )
-    last_login = None #important
+    role = models.CharField(
+        max_length=50,
+        choices=ROLE,
+        default="sua_chua",
+    )
+    last_login  = None #important
     is_staff = None
     first_name = models.CharField(max_length=100,default = "")
     last_name = models.CharField(max_length=100,default = "")
@@ -56,9 +52,9 @@ class User(AbstractBaseUser):
 
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['department','city','district','street']
+    REQUIRED_FIELDS = ['role','department','city','district','street']
 
-    objects = UserManager()
+    objects = StaffManager()
 
     def __str__(self):
         return self.email

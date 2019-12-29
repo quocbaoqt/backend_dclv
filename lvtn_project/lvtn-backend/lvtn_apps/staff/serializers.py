@@ -5,27 +5,25 @@ from rest_framework.serializers import (
     CharField
 )
 from .models import (
-    User
+    Staff
 )
 # from ims_apps.common_models.ResponseInfo import ResponseInfo
 from ..common_models.ResponseInfo import ResponseInfo
 
 
-class UserSerializer(serializers.ModelSerializer):
+class StaffSerializer(serializers.ModelSerializer):
     # profile = UserProfileSerializer(required=True)
 
     class Meta:
-        model = User
+        model = Staff
         fields = '__all__'
 
 
-class UserSerializerForList(serializers.ModelSerializer):
+class StaffSerializerForList(serializers.ModelSerializer):
     # profile = UserProfileSerializer(required=True)
 
     class Meta:
-        model = User
+        model = Staff
         fields = [
-            'id',
             'email',
-            'avatar'
         ]
