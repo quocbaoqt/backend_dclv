@@ -1,0 +1,10 @@
+Django
+djangorestframework
+beautifulsoup4
+psycopg2
+django-filter
+Pillow
+django-rest-swagger
+djangorestframework_simplejwt
+django-summernote
+django-cors-headers
