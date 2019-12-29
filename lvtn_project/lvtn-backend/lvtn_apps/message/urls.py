@@ -2,7 +2,8 @@ from django.urls import include
 from django.urls import path
 from rest_framework import routers
 from .views import (
-    MessageResponse
+    MessageResponse,
+    MessageResponseForList
     # GetUserProfileResponse,
     # UpdateUserProfileResponse,
 )
@@ -17,5 +18,15 @@ urlpatterns = [
         'create/',
         MessageResponse.as_view({'post': 'create'}),
         name='message_create'
+    ),
+    path(
+        'list/',
+        MessageResponseForList.as_view({'get': 'list'}),
+        name='message_list'
+    ),
+    path(
+        'detail/<str:id>',
+        MessageResponse.as_view({'get': 'retrieve'}),
+        name='message_detail'
     ),
 ]
