@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'lvtn_apps.apartment.apps.ApartmentConfig',
     'lvtn_apps.common_models.apps.CommonModelsConfig',
     'lvtn_apps.message.apps.MessageConfig',
-    'lvtn_apps.staff.apps.StaffConfig',
+    'lvtn_apps.request.apps.RequestConfig',
 ]
 
 MIDDLEWARE = [
@@ -99,23 +99,27 @@ TEMPLATES = [
         },
     },
 ]
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'basic': {
+            'type': 'basic'
+        }
+    },
+}
 
 REST_FRAMEWORK = { 
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
-    'DEFAULT_PERMISSION_CLASSES': (
-            'rest_framework.permissions.IsAdminUser'
-       ),
     }
 WSGI_APPLICATION = 'lvtn_project.wsgi.application'
 
-
+AUTH_USER_MODEL = 'user.User'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'lvtn',
+        'NAME': 'lvtn_db',
         'USER': 'lvtn_user',
         'PASSWORD': 'admin',
         'HOST': '127.0.0.1',
@@ -141,6 +145,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+LOGIN_URL = 'rest_framework:login'
+LOGOUT_URL = 'rest_framework:logout'
 
 
 # Internationalization

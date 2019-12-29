@@ -1,13 +1,16 @@
 from django.urls import include
 from django.urls import path
 from rest_framework import routers
-
 from .views import (
     UserResponse,
     UserResponseForList,
+    UserRegisterResponse
     # GetUserProfileResponse,
     # UpdateUserProfileResponse,
 )
+
+router = routers.DefaultRouter()
+# router.register(r'users', UserViewSet)
 
 
 router = routers.DefaultRouter()
@@ -16,14 +19,14 @@ router = routers.DefaultRouter()
 urlpatterns = [
     path('', include(router.urls)),
     path(
-        'create/',
-        UserResponse.as_view({'post': 'create'}),
+        'register/',
+        UserRegisterResponse.as_view({'post': 'create'}),
         name='user_create'
     ),
     path(
         'list/',
         UserResponseForList.as_view({'get': 'list'}),
-        name='user_create'
+        name='user_list'
     ),
     path(
         'detail/<str:id>',

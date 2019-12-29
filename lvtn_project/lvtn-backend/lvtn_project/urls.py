@@ -25,12 +25,17 @@ from django.conf.urls.static import static
 schema_view = get_swagger_view(title='LVTN API')
 urlpatterns = [
     path('', schema_view),
+    path(
+        'api-auth/',
+        include('rest_framework.urls', namespace='rest_framework')
+    ),
     path('docs/', include_docs_urls(title='API Lvtn')),
     path('admin/', admin.site.urls),
     path('accounts/login/', schema_view),
     path('user/', include('lvtn_apps.user.urls')),
-    path('staff/', include('lvtn_apps.staff.urls')),
     path('apartment/', include('lvtn_apps.apartment.urls')),
     path('message/',include('lvtn_apps.message.urls')),
+    path('request/',include('lvtn_apps.request.urls')),
+    # path('auth/', include('lvtn_apps.user.urls')),
     # path('leaveform/', include('leaveform_apps.leave_form.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

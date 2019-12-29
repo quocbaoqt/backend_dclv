@@ -1,65 +1,63 @@
 import os
+from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
+from django.db import models
+from django.contrib.auth.models import AbstractUser
 
-from django.db import models
-from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
-from django.db import models
-from django.contrib.auth.models import PermissionsMixin
-import datetime
-from django.core.validators import (
-    FileExtensionValidator,
-    )
 # from leaveform_apps.user.models import User
-from lvtn_apps.utils.method_utils import generate_name_image
-
-class UserManager(AbstractBaseUser):
-    def _create_user(self,email,password,**extra_fields):
-        if not email:
-            raise ValueError('')
-        email = self.normalize_email(email)
-        user = self.model(email=email,**extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_user(self,department,email,password=None):
-        return self._create_user(email,password,department=department)
-    def create_superuser(self,department,email,password=None):
-        return self._create_user(
-            email,password,department=department,is_staff=True,
-            is_supperuser=True
-        )
-
-class User(AbstractBaseUser):
-    
-    email = models.EmailField(unique=True)
-    department = models.CharField(max_length=100)
-    avatar = models.FileField(
-        upload_to=generate_name_image,
-        # upload_to='product/',
-
-        null=True,
-        blank=True,
-        validators=[
-            FileExtensionValidator(
-                allowed_extensions=['png', 'jpeg', 'jpg', 'svg']
-                )
-            ]
-        )
-    last_login = None #important
-    is_staff = None
-    first_name = models.CharField(max_length=100,default = "")
-    last_name = models.CharField(max_length=100,default = "")
-    city = models.CharField(max_length=100,default = "")
-    district = models.CharField(max_length=100,default = "")
-    street = models.CharField(max_length=100,default = "")
-    birthday = models.DateField(null=True, blank=True)
 
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['department','city','district','street']
+class User(AbstractUser):
+    username = models.CharField(blank=True, null=True, max_length=20, unique=True)
+    email = models.EmailField(_('email address'), null=True)
+    phone_number = models.CharField(
+        _('Phone Number'),
+        unique=True,
+        max_length=20
+    )
 
-    objects = UserManager()
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email']
 
     def __str__(self):
-        return self.email
+        return "{}".format(self.username)
 
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='profile'
+    )
+    dob = models.DateField(blank=True, null=True)
+    email = models.EmailField(_('email address'), blank=False)
+    # avatar = models.FileField(
+    #     # upload_to='user/',
+    #     upload_to=generate_name_image,
+    #     null=True,
+    #     blank=True,
+    #     validators=[
+    #         FileExtensionValidator(
+    #             allowed_extensions=['png', 'jpeg', 'jpg', 'svg']
+    #             )
+    #         ]
+    #     )
+
+    user_name = models.CharField(max_length=64)
+    email = models.EmailField(max_length=255)
+    first_name = models.TextField(null=True, blank=True)
+    last_name = models.TextField(null=True, blank=True)
+    active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+    updated_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    def __str__(self):
+        return '{}'.format(self.user_name)
+    # def __str__(self):
+    #     return self.pk
